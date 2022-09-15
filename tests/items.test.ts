@@ -56,19 +56,10 @@ describe("Testa GET /items/:id ", () => {
   });
 
   it("Deve retornar status 404 caso não exista um item com esse id", async () => {
-    const item = await itemFactory();
-
-    await supertest(app).post(`/items`).send(item);
-    const createdItem = await prisma.items.findUnique({
-      where: { title: item.title },
-    });
-
-    const result = await supertest(app)
-      .get(`/items/${createdItem.id + 1}`)
-      .send();
+    const result = await supertest(app).get(`/items/1`).send();
 
     expect(result.status).toBe(404);
-    expect(result.body).not.toEqual(createdItem);
+    expect(result.body).toStrictEqual({});
   });
 });
 
